@@ -33,6 +33,7 @@ def load_cows(filename):
 
 # Problem 1
 def greedy_cow_transport(cows,limit=10):
+    
     """
     Uses a greedy heuristic to determine an allocation of cows that attempts to
     minimize the number of spaceship trips needed to transport all the cows. The
@@ -55,11 +56,39 @@ def greedy_cow_transport(cows,limit=10):
     trips
     """
     # TODO: Your code here
-    pass
-
+    masterList = []
+    cowDict = dict(cows)
+    cowNames = list(cowDict.keys())
+    cowWeights = list(cowDict.values())
+    remainingWeight = limit
+    while cowNames != []:
+        remainingWeight = limit
+        weightToAdd = 0
+        thisTrip = []
+        while remainingWeight >= min(cowWeights):
+            L = len(cowNames)
+            weightToAdd = 0
+            cowToAdd = None
+            for x in range(L):
+                if cowWeights[x] > weightToAdd and cowWeights[x] <= remainingWeight:
+                    cowToAdd = cowNames[x]
+                    weightToAdd = cowWeights[x]
+            remainingWeight -= weightToAdd
+            thisTrip.append(cowToAdd)
+            cowNames.remove(cowToAdd)
+            cowWeights.remove(weightToAdd)
+            if cowNames!= []:
+                if remainingWeight < min(cowWeights):
+                    masterList.append(thisTrip)
+            else:
+                if thisTrip != []:
+                    masterList.append(thisTrip)
+                return masterList
 
 # Problem 2
 def brute_force_cow_transport(cows,limit=10):
+    
+    
     """
     Finds the allocation of cows that minimizes the number of spaceship trips
     via brute force.  The brute force algorithm should follow the following method:
@@ -79,12 +108,31 @@ def brute_force_cow_transport(cows,limit=10):
     transported on a particular trip and the overall list containing all the
     trips
     """
-    # TODO: Your code here
-    pass
+    def brute_force_cow_transport(cows,limit=10):
+        possibleJourneySets = []
+        for item in get_partitions(cows):
+            journeySet = []
+            for entry in range(len(item)):
+                totalWeight = 0
+                journey = []
+                for cow in item[entry]:
+                    totalWeight += cows.get(cow)
+                    ourney.append(cow)
+                if totalWeight <= limit:
+                    journeySet.append(journey)
+                if item == journeySet:
+                    possibleJourneySets.append(journeySet)
+        workingLength = len(possibleJourneySets[0])
+        workingPosition = 0
+        for number in range(len(possibleJourneySets)):
+            if len(possibleJourneySets[number]) < workingLength:
+                workingLength = len(possibleJourneySets[number])
+                workingPosition = number
+        return possibleJourneySets[workingPosition]
 
         
 # Problem 3
-def compare_cow_transport_algorithms():
+def compare_cow_transport_algorithms(cows,limit = 10):
     """
     Using the data from ps1_cow_data.txt and the specified weight limit, run your
     greedy_cow_transport and brute_force_cow_transport functions here. Use the
@@ -97,10 +145,20 @@ def compare_cow_transport_algorithms():
     Returns:
     Does not return anything.
     """
-    # TODO: Your code here
-    pass
-
-
+    print('Running Greedy Algorithm')
+    start = time.time()
+    x = (greedy_cow_transport(cows, limit))
+    print(x)
+    print('number of trips = ', x)
+    end = time.time()
+    print('Finished greedy algorithm. Time = ',end-start)
+    
+    print('Running BruteForce Algorithm')
+    start = time.time()
+    x = (brute_force_cow_transport(cows, limit))
+    print(x)
+    print('number of trips = ', x)
+    print('Finished greedy algorithm. Time = ',end-start)
 """
 Here is some test data for you to see the results of your algorithms with. 
 Do not submit this along with any of your answers. Uncomment the last two
@@ -108,10 +166,10 @@ lines to print the result of your problem.
 """
 
 cows = load_cows("ps1_cow_data.txt")
-limit=100
-print(cows)
-
-print(greedy_cow_transport(cows, limit))
-print(brute_force_cow_transport(cows, limit))
-
+limit=10
+cows2 = {'Maggie': 3, 'Herman': 7, 'Betsy': 9, 'Oreo': 6, 'Moo Moo': 3, 'Milkshake': 2, 'Millie': 5, 'Lola': 2, 'Florence': 2, 'Henrietta': 9}
+cows3 = {'Lilly': 24, 'Coco': 10, 'Betsy': 65, 'Willow': 35, 'Daisy': 50, 'Dottie': 85, 'Rose': 50, 'Abby': 38, 'Patches': 12, 'Buttercup': 72}
+compare_cow_transport_algorithms(cows)
+compare_cow_transport_algorithms(cows2)
+compare_cow_transport_algorithms(cows3,100)
 
