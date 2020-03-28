@@ -33,6 +33,7 @@ def load_cows(filename):
 
 # Problem 1
 def greedy_cow_transport(cows,limit=10):
+    
     """
     Uses a greedy heuristic to determine an allocation of cows that attempts to
     minimize the number of spaceship trips needed to transport all the cows. The
@@ -55,11 +56,39 @@ def greedy_cow_transport(cows,limit=10):
     trips
     """
     # TODO: Your code here
-    pass
-
+    masterList = []
+    cowDict = dict(cows)
+    cowNames = list(cowDict.keys())
+    cowWeights = list(cowDict.values())
+    remainingWeight = limit
+    while cowNames != []:
+        remainingWeight = limit
+        weightToAdd = 0
+        thisTrip = []
+        while remainingWeight >= min(cowWeights):
+            L = len(cowNames)
+            weightToAdd = 0
+            cowToAdd = None
+            for x in range(L):
+                if cowWeights[x] > weightToAdd and cowWeights[x] <= remainingWeight:
+                    cowToAdd = cowNames[x]
+                    weightToAdd = cowWeights[x]
+            remainingWeight -= weightToAdd
+            thisTrip.append(cowToAdd)
+            cowNames.remove(cowToAdd)
+            cowWeights.remove(weightToAdd)
+            if cowNames!= []:
+                if remainingWeight < min(cowWeights):
+                    masterList.append(thisTrip)
+            else:
+                if thisTrip != []:
+                    masterList.append(thisTrip)
+                return masterList
 
 # Problem 2
 def brute_force_cow_transport(cows,limit=10):
+    
+    
     """
     Finds the allocation of cows that minimizes the number of spaceship trips
     via brute force.  The brute force algorithm should follow the following method:
@@ -113,5 +142,6 @@ print(cows)
 
 print(greedy_cow_transport(cows, limit))
 print(brute_force_cow_transport(cows, limit))
+
 
 
