@@ -108,12 +108,31 @@ def brute_force_cow_transport(cows,limit=10):
     transported on a particular trip and the overall list containing all the
     trips
     """
-    # TODO: Your code here
-    pass
+    def brute_force_cow_transport(cows,limit=10):
+        possibleJourneySets = []
+        for item in get_partitions(cows):
+            journeySet = []
+            for entry in range(len(item)):
+                totalWeight = 0
+                journey = []
+                for cow in item[entry]:
+                    totalWeight += cows.get(cow)
+                    ourney.append(cow)
+                if totalWeight <= limit:
+                    journeySet.append(journey)
+                if item == journeySet:
+                    possibleJourneySets.append(journeySet)
+        workingLength = len(possibleJourneySets[0])
+        workingPosition = 0
+        for number in range(len(possibleJourneySets)):
+            if len(possibleJourneySets[number]) < workingLength:
+                workingLength = len(possibleJourneySets[number])
+                workingPosition = number
+        return possibleJourneySets[workingPosition]
 
         
 # Problem 3
-def compare_cow_transport_algorithms():
+def compare_cow_transport_algorithms(cows,limit = 10):
     """
     Using the data from ps1_cow_data.txt and the specified weight limit, run your
     greedy_cow_transport and brute_force_cow_transport functions here. Use the
@@ -126,10 +145,20 @@ def compare_cow_transport_algorithms():
     Returns:
     Does not return anything.
     """
-    # TODO: Your code here
-    pass
-
-
+    print('Running Greedy Algorithm')
+    start = time.time()
+    x = (greedy_cow_transport(cows, limit))
+    print(x)
+    print('number of trips = ', x)
+    end = time.time()
+    print('Finished greedy algorithm. Time = ',end-start)
+    
+    print('Running BruteForce Algorithm')
+    start = time.time()
+    x = (brute_force_cow_transport(cows, limit))
+    print(x)
+    print('number of trips = ', x)
+    print('Finished greedy algorithm. Time = ',end-start)
 """
 Here is some test data for you to see the results of your algorithms with. 
 Do not submit this along with any of your answers. Uncomment the last two
@@ -137,11 +166,9 @@ lines to print the result of your problem.
 """
 
 cows = load_cows("ps1_cow_data.txt")
-limit=100
-print(cows)
-
-print(greedy_cow_transport(cows, limit))
-print(brute_force_cow_transport(cows, limit))
-
-
-
+limit=10
+cows2 = {'Maggie': 3, 'Herman': 7, 'Betsy': 9, 'Oreo': 6, 'Moo Moo': 3, 'Milkshake': 2, 'Millie': 5, 'Lola': 2, 'Florence': 2, 'Henrietta': 9}
+cows3 = {'Lilly': 24, 'Coco': 10, 'Betsy': 65, 'Willow': 35, 'Daisy': 50, 'Dottie': 85, 'Rose': 50, 'Abby': 38, 'Patches': 12, 'Buttercup': 72}
+compare_cow_transport_algorithms(cows)
+compare_cow_transport_algorithms(cows2)
+compare_cow_transport_algorithms(cows3,100)
