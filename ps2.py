@@ -1,3 +1,5 @@
+# ps2.py
+# skeleton functions and function descriptions are provided. I then encode the functions from problem 1 onwards.
 # 6.00.2x Problem Set 2: Simulating robots
 
 import math
